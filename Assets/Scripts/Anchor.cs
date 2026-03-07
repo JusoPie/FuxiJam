@@ -19,7 +19,7 @@ public class Anchor : MonoBehaviour
 
         if (Input.GetKey(KeyCode.A))
         {
-            transform.RotateAround(playerTrans.position, playerTrans.forward, 15);
+            
         }
 
         if (Input.GetKey(KeyCode.S))
