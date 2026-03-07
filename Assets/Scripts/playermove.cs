@@ -40,6 +40,7 @@ public class playermove : MonoBehaviour
         if (Input.GetKey(KeyCode.S))
         {
             rb.AddForce(Vector3.down * downSpeed, ForceMode.Force);
+            
         }
     }
 }
