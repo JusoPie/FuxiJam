@@ -35,7 +35,7 @@ public class speedCalc : MonoBehaviour
     
     void FixedUpdate()
     {
-        speedDown = lastPosition.y - transform.position.y ;
+        speedDown = lastPosition.y - transform.position.y;
         speedSideways = transform.position.x - lastPosition.x;
         lastPosition = transform.position;
     }
