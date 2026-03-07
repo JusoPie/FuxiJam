@@ -8,7 +8,7 @@ public class speedCalc : MonoBehaviour
     public string speedSidewaysName = "SpeedSideways";
     public string speedDownName = "SpeedDown";
 
-    [SerializeField] private float speedModifier = 4f;
+    [SerializeField] private float animSpeedModifier = 4f;
 
     Vector3 lastPosition = Vector3.zero;
     Quaternion targetRotation;
@@ -36,7 +36,7 @@ public class speedCalc : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        animator.SetFloat(speedSidewaysName, speedSideways * speedModifier);
-        animator.SetFloat(speedDownName, speedDown * speedModifier);
+        animator.SetFloat(speedSidewaysName, speedSideways * animSpeedModifier);
+        animator.SetFloat(speedDownName, speedDown * animSpeedModifier);
     }
 }
