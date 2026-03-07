@@ -5,8 +5,15 @@ public class speedCalc : MonoBehaviour
     public float speedDown = 0f;
     public float speedSideways = 0f;
 
+    private float currentSpeedDown;
+    private float currentSpeedSideways;
+
+    public float smoothing = 10f;
+
     public string speedSidewaysName = "SpeedSideways";
     public string speedDownName = "SpeedDown";
+
+    
 
     [SerializeField] private float animSpeedModifier = 4f;
 
@@ -28,7 +35,7 @@ public class speedCalc : MonoBehaviour
     
     void FixedUpdate()
     {
-        speedDown = lastPosition.y - transform.position.y;
+        speedDown = lastPosition.y - transform.position.y ;
         speedSideways = transform.position.x - lastPosition.x;
         lastPosition = transform.position;
     }
@@ -36,7 +43,11 @@ public class speedCalc : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        animator.SetFloat(speedSidewaysName, speedSideways * animSpeedModifier);
-        animator.SetFloat(speedDownName, speedDown * animSpeedModifier);
+        currentSpeedDown = Mathf.Lerp(currentSpeedDown, speedDown, Time.deltaTime * smoothing);
+        currentSpeedSideways = Mathf.Lerp(currentSpeedSideways, speedSideways , Time.deltaTime * smoothing);
+
+        animator.SetFloat(speedDownName, currentSpeedDown * animSpeedModifier);
+        animator.SetFloat(speedSidewaysName, currentSpeedSideways * animSpeedModifier);
+        
     }
 }

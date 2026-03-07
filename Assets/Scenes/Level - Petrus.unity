@@ -438,6 +438,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   target: {fileID: 210307356}
   offset: {x: 0, y: 0.4, z: -20}
+  zoomedOutOffset: {x: 0, y: 2, z: -50}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -670,13 +671,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 471749108}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: 0.588236, w: 0.8086893}
-  m_LocalPosition: {x: 19.64, y: -8.72, z: -0.474}
+  m_LocalRotation: {x: -0, y: -0, z: -0.012244584, w: 0.9999251}
+  m_LocalPosition: {x: -0.39, y: 0.35, z: -0.474}
   m_LocalScale: {x: 5.75, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 72.064}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -1.403}
 --- !u!1 &546311578 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: feb5160d07ea181459371e0a66bd38a4, type: 3}
@@ -723,6 +724,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::speedCalc
   speedDown: 0
   speedSideways: 0
+  smoothing: 10
   speedSidewaysName: SpeedSideways
   speedDownName: SpeedDown
   animSpeedModifier: 4
@@ -892,7 +894,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 93889c3e12732de44a8335bf1ab40ab7, type: 2}
     - target: {fileID: -3887185075125053422, guid: feb5160d07ea181459371e0a66bd38a4, type: 3}
       propertyPath: 'm_BlendShapeWeights.Array.data[0]'
-      value: 100
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -3887185075125053422, guid: feb5160d07ea181459371e0a66bd38a4, type: 3}
       propertyPath: 'm_BlendShapeWeights.Array.data[1]'
@@ -1102,11 +1104,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0d4345e8781452b4cb0ac658c8ec3ce7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.01503
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0d4345e8781452b4cb0ac658c8ec3ce7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.00256
+      value: 0.00242
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0d4345e8781452b4cb0ac658c8ec3ce7, type: 3}
       propertyPath: m_LocalPosition.z
