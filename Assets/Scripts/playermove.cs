@@ -25,7 +25,7 @@ public class playermove : MonoBehaviour
 
     void Update()
     {
-        input_horizontal = Input.GetAxis("Horizontal"); // A/D
+        input_horizontal = Input.GetAxis("Horizontal"); 
 
         float targetTilt = input_horizontal * maxTilt;
         currentTilt = Mathf.Lerp(currentTilt, targetTilt, Time.deltaTime * tiltSpeed);

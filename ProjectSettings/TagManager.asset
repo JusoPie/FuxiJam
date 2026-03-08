@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - divider
+  - Droplet
   layers:
   - Default
   - TransparentFX

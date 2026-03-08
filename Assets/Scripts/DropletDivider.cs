@@ -1,39 +1,57 @@
 using UnityEngine;
+using System.Collections;
 
 public class DropletDivider : MonoBehaviour
 {
     public GameObject dropletPrefab;
     public float splitForce = 10f;
     public float splitOffset = 0.5f;
+    public float cooldown = 2f;
+
+    private bool canDivide = true;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
-        {
-            Rigidbody rb = other.GetComponent<Rigidbody>();
+        if (!canDivide) return;
+        if (!other.CompareTag("Player")) return;
 
-            Vector3 pos = other.transform.position;
+        
+        Rigidbody rb = other.GetComponentInParent<Rigidbody>();
+        if (rb == null) return;
 
-            // Move original slightly left
-            other.transform.position = pos + Vector3.left * splitOffset;
+        canDivide = false;
 
-            // Spawn second droplet slightly right
-            GameObject newDrop = Instantiate(
-                dropletPrefab,
-                pos + Vector3.right * splitOffset,
-                other.transform.rotation
-            );
+        Vector3 pos = rb.transform.position;
 
-            Rigidbody newRB = newDrop.GetComponent<Rigidbody>();
+        // Move original left
+        rb.transform.position = pos + Vector3.left * splitOffset;
 
-            // Disable control
-            playermove control = newDrop.GetComponent<playermove>();
-            if (control != null)
-                control.enabled = false;
+        // Spawn second droplet slightly right
+        GameObject newDrop = Instantiate(
+            dropletPrefab,
+            pos + Vector3.right * splitOffset,
+            other.transform.rotation
+        );
 
-            // Push apart
-            rb.AddForce(Vector3.left * 5f, ForceMode.Impulse);
-            newRB.AddForce(Vector3.right * 5f, ForceMode.Impulse);
-        }
+        Rigidbody newRB = newDrop.GetComponent<Rigidbody>();
+
+        // Disable control
+        playermove control = newDrop.GetComponent<playermove>();
+        if (control != null)
+            control.enabled = false;
+
+        // Push apart
+        rb.AddForce(Vector3.left * splitForce, ForceMode.Impulse);
+
+        if (newRB != null)
+            newRB.AddForce(Vector3.right * splitForce, ForceMode.Impulse);
+
+        StartCoroutine(DivideCooldown());
+    }
+
+    IEnumerator DivideCooldown()
+    {
+        yield return new WaitForSeconds(cooldown);
+        canDivide = true;
     }
 }
