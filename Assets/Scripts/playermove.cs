@@ -1,9 +1,13 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 
 public class playermove : MonoBehaviour
 {
     public Transform model;
+
+    
 
     [SerializeField] public float speed = 10f;
     [SerializeField] public float downSpeed = 20f;
@@ -42,5 +46,19 @@ public class playermove : MonoBehaviour
             rb.AddForce(Vector3.down * downSpeed, ForceMode.Force);
             
         }
+    }
+
+    public void OnTriggerEnter(Collider other)
+    {
+        //if (other.CompareTag("Stick"))
+        //{
+            //if playerstate == Big
+            //{ branch drstroy or something }
+        //}
+
+        //else 
+        //{
+        //    SceneManager.LoadScene("Level");
+        //}
     }
 }
