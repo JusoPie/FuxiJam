@@ -1,90 +1,105 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.Playables;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class PlayerStateController : MonoBehaviour
 {
-    public enum PlayerState
-    {
-        Small,
-        Normal,
-        Big
-    }
+    public GameObject branch;
 
+    public enum PlayerState { Small, Normal, Big }
     public PlayerState currentState = PlayerState.Normal;
-    public int splitCount = 0; 
-    public int maxSplits = 2; 
+
+    public int splitCount = 0;
+    public int maxSplits = 2;
 
     public Vector3 smallScale = new Vector3(0.5f, 0.5f, 1f);
     public Vector3 normalScale = new Vector3(1f, 1f, 1f);
     public Vector3 bigScale = new Vector3(1.5f, 1.5f, 1f);
 
+    // Damping values (bigger = faster)
+    public float smallDamping = 6f;
+    public float normalDamping = 4f;
+    public float bigDamping = 2f;
+
+    private Rigidbody rb;
+
+    private bool canCollect = true;
+
     private void Start()
     {
+        rb = GetComponent<Rigidbody>();
         UpdateScale();
     }
 
     public void OnSplit()
     {
+        Debug.Log("OnSplit called. Current splitCount: " + splitCount);
+
         splitCount++;
 
-        // First split → small
-        if (splitCount == 1)
-        {
-            currentState = PlayerState.Small;
-            UpdateScale();
-        }
-        // Second split → game over
-        else if (splitCount >= maxSplits)
+        if (splitCount >= maxSplits)
         {
             GameOver();
+            return;
         }
+
+        UpdateScale();
+        StartCoroutine(CollectCooldown());
+    }
+
+    private IEnumerator CollectCooldown()
+    {
+        canCollect = false;
+        yield return new WaitForSeconds(1f);
+        canCollect = true;
     }
 
     public void OnCollectDroplet()
     {
-        //if (currentState == PlayerState.Big)
-        //{ return; }
+        if (!canCollect) return;
 
         splitCount--;
 
-        if (currentState == PlayerState.Normal)
-        {
-            currentState = PlayerState.Big;
-        }
-        else if (currentState == PlayerState.Small)
-        {
-            currentState = PlayerState.Normal;
-        }
+        if (splitCount < -1)
+            splitCount = -1;
 
         UpdateScale();
     }
 
     private void UpdateScale()
     {
-        //if (currentState == PlayerState.Big)
-        //{ return; }
-
-        switch (currentState)
+        switch (splitCount)
         {
-            case PlayerState.Small:
-                transform.localScale = smallScale;
-                break;
-            case PlayerState.Normal:
-                transform.localScale = normalScale;
-                break;
-            case PlayerState.Big:
+            case -1:
+                currentState = PlayerState.Big;
                 transform.localScale = bigScale;
+                rb.linearDamping = bigDamping;
+                break;
+
+            case 0:
+                currentState = PlayerState.Normal;
+                transform.localScale = normalScale;
+                rb.linearDamping = normalDamping;
+                break;
+
+            case 1:
+                currentState = PlayerState.Small;
+                transform.localScale = smallScale;
+                rb.linearDamping = smallDamping;
                 break;
         }
+
+        Debug.Log("State: " + currentState + " | Damping: " + rb.linearDamping);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Droplet")) 
+        if (!canCollect) return;
+
+        if (other.CompareTag("Droplet"))
         {
-            SceneManager.LoadScene("Level");
+            OnCollectDroplet();
+            Destroy(other.gameObject);
         }
     }
 
@@ -92,6 +107,5 @@ public class PlayerStateController : MonoBehaviour
     {
         Debug.Log("Game Over!");
         SceneManager.LoadScene("Level");
-
     }
 }

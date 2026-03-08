@@ -7,6 +7,7 @@ TagManager:
   - divider
   - Droplet
   - Reload
+  - Stick
   layers:
   - Default
   - TransparentFX

@@ -48,17 +48,5 @@ public class playermove : MonoBehaviour
         }
     }
 
-    public void OnTriggerEnter(Collider other)
-    {
-        //if (other.CompareTag("Stick"))
-        //{
-            //if playerstate == Big
-            //{ branch drstroy or something }
-        //}
 
-        //else 
-        //{
-        //    SceneManager.LoadScene("Level");
-        //}
-    }
 }
