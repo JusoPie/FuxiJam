@@ -10,6 +10,10 @@ public class DropletCollector : MonoBehaviour
             Droplet droplet = collision.gameObject.GetComponent<Droplet>();
             if (droplet != null && droplet.IsDestructible())
                 Destroy(collision.gameObject);
+
+            PlayerStateController stateController = GetComponent<PlayerStateController>();
+            if (stateController != null)
+                stateController.OnCollectDroplet();
         }
     }
 

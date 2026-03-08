@@ -15,7 +15,6 @@ public class DropletDivider : MonoBehaviour
         if (!canDivide) return;
         if (!other.CompareTag("Player")) return;
 
-        
         Rigidbody rb = other.GetComponentInParent<Rigidbody>();
         if (rb == null) return;
 
@@ -23,28 +22,36 @@ public class DropletDivider : MonoBehaviour
 
         Vector3 pos = rb.transform.position;
 
-        // Move original left
-        rb.transform.position = pos + Vector3.left * splitOffset;
+        PlayerStateController stateController = rb.GetComponent<PlayerStateController>();
+        if (stateController != null)
+            stateController.OnSplit();
 
-        // Spawn second droplet slightly right
+        //left or right 
+        float directionX = Mathf.Sign(pos.x - transform.position.x);
+
+        Vector3 mainDir = new Vector3(directionX, 0, 0);
+        Vector3 oppositeDir = new Vector3(-directionX, 0, 0);
+
+        rb.transform.position = pos + mainDir * splitOffset;
+
         GameObject newDrop = Instantiate(
             dropletPrefab,
-            pos + Vector3.right * splitOffset,
+            pos + oppositeDir * splitOffset,
             other.transform.rotation
         );
 
         Rigidbody newRB = newDrop.GetComponent<Rigidbody>();
 
-        // Disable control
+        
         playermove control = newDrop.GetComponent<playermove>();
         if (control != null)
             control.enabled = false;
 
-        // Push apart
-        rb.AddForce(Vector3.left * splitForce, ForceMode.Impulse);
+        
+        rb.AddForce(mainDir * splitForce, ForceMode.Impulse);
 
         if (newRB != null)
-            newRB.AddForce(Vector3.right * splitForce, ForceMode.Impulse);
+            newRB.AddForce(oppositeDir * splitForce, ForceMode.Impulse);
 
         StartCoroutine(DivideCooldown());
     }

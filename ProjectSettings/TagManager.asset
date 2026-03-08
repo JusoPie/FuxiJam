@@ -6,6 +6,7 @@ TagManager:
   tags:
   - divider
   - Droplet
+  - Reload
   layers:
   - Default
   - TransparentFX
